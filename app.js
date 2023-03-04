@@ -1,6 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "./uploads");
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.originalname);
+	},
+});
 
 const mongoUrl =
 	"mongodb+srv://anamul:anamul12345@cluster0.jaywm49.mongodb.net/?retryWrites=true&w=majority";
@@ -10,6 +20,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+
+const upload = multer({ storage: storage });
 
 // var nodemailer = require("nodemailer");
 
@@ -35,6 +47,10 @@ const authRouter = require("./routes/auth.router");
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.post("/upload", upload.single("pdf"), (req, res) => {
+	// req.file contains information about the uploaded file
+	res.json({ message: "File uploaded successfully!", data: req.file });
+});
 
 // require("./model/user.model");
 
