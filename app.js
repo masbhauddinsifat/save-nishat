@@ -44,9 +44,11 @@ app.get("/", async (req, res) => {
 
 const userRouter = require("./routes/user.router");
 const authRouter = require("./routes/auth.router");
+const thesisRouter = require("./routes/thisis.router");
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/thesis", thesisRouter);
 app.post("/upload", upload.single("pdf"), (req, res) => {
 	// req.file contains information about the uploaded file
 	res.json({ message: "File uploaded successfully!", data: req.file });
